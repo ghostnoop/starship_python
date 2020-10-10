@@ -5,6 +5,7 @@ from models.LaserGun import *
 from models.Player import *
 from models.Enemy import *
 from models.Boss import *
+from models.Protective_Field import *
 from config.settings import *
 
 pygame.init()
@@ -25,6 +26,9 @@ def events():
                 all_sprites.add(new_laser)
                 lasers.add(new_laser)
 
+            if event.key == pygame.K_s:
+                all_sprites.add(field)
+
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
 
@@ -39,6 +43,7 @@ enemies_with_boss_group = pygame.sprite.Group()
 all_sprites.add(player)
 
 boss = Boss()
+field = Protective_Field(player)
 
 tick_timer = 0
 
@@ -55,6 +60,10 @@ while running:
     img = font.render("100", True, RED)
     t = img.get_rect(center=(WIDTH / 2, 10))
     display.blit(img, t)
+
+    # Lose
+    if not player.alive():
+        running = False
 
     tick_timer += 1
 
@@ -95,18 +104,20 @@ while running:
         enemies_with_boss_group.add(m)
         player.score += min_point
 
-    hits_1 = pygame.sprite.spritecollide(player, enemy_group, True)
-    hits_2 = pygame.sprite.spritecollide(player, enemy_lasers, True)
-    if hits_1 or hits_2:
-        player.hearts -= 1
-        if player.hearts <= 0:
-            running = False
+    field.hit(enemy_lasers)
+    field.hit(enemy_group)
 
+    player.hit(enemy_group)
+    player.hit(enemy_lasers)
+
+    # boss.hit(lasers)
     hits = pygame.sprite.spritecollide(boss, lasers, True)
     if hits:
         boss.hearts -= 1
         if boss.hearts <= 0:
+            # Won
             boss.kill()
+            running = False
 
     display.fill(BLACK)
     all_sprites.draw(display)

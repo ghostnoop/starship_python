@@ -2,8 +2,9 @@ import random
 
 from config.settings import *
 from models.LaserGun import LaserGun
+from models.Instance import Instance
 
-class Boss(pygame.sprite.Sprite):
+class Boss(pygame.sprite.Sprite, Instance):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -17,6 +18,8 @@ class Boss(pygame.sprite.Sprite):
         self.laser_group = pygame.sprite.Group()
 
     def update(self):
+
+        Instance.update(self)
 
         if self.rect.x > WIDTH - self.image.get_width():
             self.rect.x -= 3

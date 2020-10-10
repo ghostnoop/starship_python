@@ -1,9 +1,10 @@
 import pygame
 
 from config.settings import *
+from models.Instance import *
 
+class Player(pygame.sprite.Sprite, Instance):
 
-class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.hearts = player_hearts
@@ -21,6 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.animate_sprite()
 
     def update(self):
+        Instance.update(self)
 
         self.image = player_models[self.state_icon % len(player_models)]
         self.state_icon += 1
