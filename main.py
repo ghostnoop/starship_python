@@ -8,7 +8,7 @@ from config.settings import *
 
 pygame.init()
 clock = pygame.time.Clock()
-display = pygame.display.set_mode((WIDTH, HEIGHT+200))
+display = pygame.display.set_mode((WIDTH, HEIGHT + 200))
 
 player_group = pygame.sprite.Group()
 
@@ -37,16 +37,13 @@ all_sprites.add(player)
 
 tick_timer = 0
 
+font = pygame.font.Font(None, 32)
 
 running = True
 while running:
     clock.tick(60)
-    events()
 
-    font = pygame.font.SysFont(None, 30)
-    img = font.render("100", True, RED)
-    t = img.get_rect(center=(WIDTH / 2, 10))
-    display.blit(img, t)
+    events()
 
     tick_timer += 1
     if tick_timer > 60:
@@ -73,6 +70,21 @@ while running:
 
     display.fill(BLACK)
     all_sprites.draw(display)
+
+    pygame.draw.line(display,WHITE, (0, HEIGHT), (WIDTH, HEIGHT))
+
+    # information about game
+    pl_score = font.render(f'player score: {str(player.score).rjust(5,"0")}', True, GREEN)
+    textRect = pl_score.get_rect()
+    textRect.center = (WIDTH // 8, HEIGHT + 50)
+    display.blit(pl_score, textRect)
+
+    pl_hp = font.render(f"player hp: {player.hearts}", True, GREEN)
+    textRect = pl_hp.get_rect()
+    textRect.center = (WIDTH // 2, HEIGHT + 50)
+    display.blit(pl_hp, textRect)
+    # set the center of the rectangular object.
+
     pygame.display.flip()
 
 pygame.quit()
