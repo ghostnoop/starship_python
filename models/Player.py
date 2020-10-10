@@ -7,7 +7,6 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.hearts = player_hearts
-
         self.image = player_models[0]
 
         # self.image = pygame.Surface((50, 40))

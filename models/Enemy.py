@@ -2,7 +2,7 @@ import random
 
 import pygame
 from config.settings import *
-
+from models.LaserGun import LaserGun
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
@@ -14,6 +14,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = random.randrange(0, HEIGHT)
         self.speedy = random.randrange(1, 5)
         self.speedx = random.randrange(-2, -1)
+        self.laser_group = pygame.sprite.Group()
 
     def update(self):
         self.rect.x += self.speedx
@@ -26,3 +27,9 @@ class Enemy(pygame.sprite.Sprite):
 
         if self.rect.left < -10:
             self.kill()
+
+    def shoot(self):
+        laser = LaserGun(self, -1, RED)
+        laser.rect.bottom = self.rect.bottom
+        laser.rect.centerx = self.rect.centerx
+        self.laser_group.add(laser)
