@@ -12,7 +12,7 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
-player_side = 0
+player_side = [0]
 min_point = 100
 player_hearts = 5
 player_models = [

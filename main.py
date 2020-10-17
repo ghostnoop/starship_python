@@ -1,7 +1,10 @@
 import pygame
+import pygame_menu
 import time
 
+from pygame_menu.themes import Theme
 from models.LaserGun import *
+from models.Menu import menu_loader
 from models.Player import *
 from models.Enemy import *
 from models.Boss import *
@@ -16,11 +19,16 @@ display = pygame.display.set_mode((WIDTH, HEIGHT + 200))
 player_group = pygame.sprite.Group()
 
 background = pygame.image.load("static/images/background/backv3.png")
-background = pygame.transform.scale(background, [WIDTH,HEIGHT])
-
+background = pygame.transform.scale(background, [WIDTH, HEIGHT])
 
 # background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
+def menu_start():
+    surface = pygame.display.set_mode((WIDTH, HEIGHT + 200))
+    menu = menu_loader(HEIGHT, WIDTH)
+    menu.mainloop(surface)
+
+menu_start()
 
 def events():
     for event in pygame.event.get():
@@ -41,7 +49,7 @@ def events():
 
 
 all_sprites = pygame.sprite.Group()
-
+print(player_side)
 player = Player()
 lasers = pygame.sprite.Group()
 enemy_lasers = pygame.sprite.Group()
