@@ -21,7 +21,9 @@ player_group = pygame.sprite.Group()
 background = pygame.image.load("static/images/background/backv3.png")
 background = pygame.transform.scale(background, [WIDTH, HEIGHT])
 
-# background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+sound1 = pygame.mixer.Sound('static/sound/laser.wav')
+sound2 = pygame.mixer.Sound('static/sound/laser_enemy.wav')
+sound3 = pygame.mixer.Sound('static/sound/explosion.wav')
 
 def menu_start():
     surface = pygame.display.set_mode((WIDTH, HEIGHT + 200))
@@ -37,9 +39,10 @@ def events():
             # sys.exit()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                new_laser = LaserGun(player, 1, GREEN)
-                all_sprites.add(new_laser)
-                lasers.add(new_laser)
+                sound1.play()
+                player.shoot()
+                all_sprites.add(player.laser_group)
+                lasers.add(player.laser_group)
 
             if event.key == pygame.K_s:
                 all_sprites.add(field)
@@ -49,7 +52,6 @@ def events():
 
 
 all_sprites = pygame.sprite.Group()
-print(player_side)
 player = Player()
 lasers = pygame.sprite.Group()
 enemy_lasers = pygame.sprite.Group()
@@ -75,7 +77,7 @@ while running:
     # rel_x = bg_x[x] % bg_imgs[x].get_rect().width
     display.fill(BLACK)
 
-    display.blit(background, (0, 0))
+    # display.blit(background, (0, 0))
     # display.blit(background,(0,background.get_rect().width))
     # display.blit(bg_imgs[x], (rel_x - bg_imgs[x].get_rect().width, 0))
 
@@ -92,11 +94,6 @@ while running:
             all_sprites.add(boss)
             exists = True
 
-    # # босс не появится, пока не наберешь опр. кол-во очков
-    # if not exists and player.score == 1000:
-    #     all_sprites.add(boss)
-    #     exists = True
-
     if tick_timer > 60:
         tick_timer = 0
         if random.random() < 0.4:
@@ -108,6 +105,7 @@ while running:
     if tick_timer == 0:
         for enemy in enemies_with_boss_group:
             if random.random() <= 0.5:
+                sound2.play()
                 enemy.shoot()
                 enemy_lasers.add(enemy.laser_group)
                 all_sprites.add(enemy.laser_group)
@@ -116,10 +114,11 @@ while running:
 
     hits = pygame.sprite.groupcollide(enemy_group, lasers, True, True)
     for hit in hits:
-        m = Enemy()
-        all_sprites.add(m)
-        enemy_group.add(m)
-        enemies_with_boss_group.add(m)
+        # m = Enemy()
+        # all_sprites.add(m)
+        # enemy_group.add(m)
+        # enemies_with_boss_group.add(m)
+        sound3.play()
         player.score += min_point
 
     field.hit(enemy_lasers)

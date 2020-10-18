@@ -2,16 +2,19 @@ import pygame
 
 from config.settings import *
 from models.Instance import *
+from models.LaserGun import *
 
 class Player(pygame.sprite.Sprite, Instance):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.hearts = player_hearts
-        self.image = player_models[0]
 
-        # self.image = pygame.Surface((50, 40))
-        # self.image.fill(GREEN)
+        if player_side[0] == 1:
+            self.image = player_models[0]
+        else:
+            self.image = tie_models[0]
+
         self.rect = self.image.get_rect()
         self.rect.centerx = 80
         self.rect.bottom = HEIGHT // 2
@@ -20,14 +23,20 @@ class Player(pygame.sprite.Sprite, Instance):
         # animate
         self.state_icon = 0
         self.animate_sprite()
+        self.laser_group = pygame.sprite.Group()
+        self.laser_length = 40
+        self.laser_speed = 10
 
     def update(self):
         Instance.update(self)
 
-        self.image = player_models[self.state_icon % len(player_models)]
+        if player_side[0] == 1:
+            self.image = player_models[self.state_icon % len(player_models)]
+        else:
+            self.image = tie_models[self.state_icon % len(tie_models)]
         self.state_icon += 1
 
-        if self.state_icon > len(player_models):
+        if self.state_icon > 4:
             self.state_icon = 0
 
         self.speedy = self.speedx = 0
@@ -53,6 +62,23 @@ class Player(pygame.sprite.Sprite, Instance):
             self.rect.centerx = WIDTH - self.image.get_width()
         if self.rect.centerx - self.image.get_width() // 2 < 0:
             self.rect.centerx = self.image.get_width() // 2
+
+    def shoot(self):
+        if player_side[0] == 1:
+            laser = LaserGun(self, 1, GREEN)
+            if random.randint(0, 1) == 1:
+                laser.rect.bottom = self.rect.top + 14
+            else:
+                laser.rect.bottom = self.rect.bottom - 5
+            laser.rect.centerx = self.rect.centerx + 30
+        else:
+            laser = LaserGun(self, 1, RED)
+            if random.randint(0, 1) == 1:
+                laser.rect.bottom = self.rect.top + 41
+            else:
+                laser.rect.bottom = self.rect.bottom - 37
+            laser.rect.left = self.rect.right - 7
+        self.laser_group.add(laser)
 
     def score_update(self):
         self.score += 1

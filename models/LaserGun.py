@@ -7,17 +7,10 @@ class LaserGun(pygame.sprite.Sprite):
     def __init__(self, player, side, color):
         self.side = side
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((40, 5))
+        self.image = pygame.Surface((player.laser_length, 4))
         self.rect = self.image.get_rect()
-        self.speed = 10
+        self.speed = player.laser_speed
         self.image.fill(color)
-
-        if side == 1:
-            if random.randint(0, 1) == 1:
-                self.rect.bottom = player.rect.top + 14
-            else:
-                self.rect.bottom = player.rect.bottom - 5
-            self.rect.centerx = player.rect.centerx + 30
 
     def update(self):
 

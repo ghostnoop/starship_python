@@ -20,8 +20,7 @@ class Protective_Field(pygame.sprite.Sprite, Instance):
 
     def update(self):
         self.time += 1
-        self.rect.centerx = self.player.rect.centerx
-        self.rect.centery = self.player.rect.centery
+        self.rect.center = self.player.rect.center
 
         if self.hearts <= 0 or self.time == 1000:
             self.kill()

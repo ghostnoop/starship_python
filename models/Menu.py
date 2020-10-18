@@ -34,6 +34,7 @@ def menu_loader(HEIGHT, WIDTH):
     menu.add_button('Play', start_the_game)
     menu.add_text_input('Name :', default='player')
     menu.add_selector('Your side :', [('light', 1), ('dark', 2)], onchange=set_side)
+    # print(settings.player_side[0])
     menu.add_button('Scores', scores_open)
     menu.add_button('Quit', pygame_menu.events.EXIT)
 
