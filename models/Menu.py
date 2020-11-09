@@ -4,7 +4,6 @@ from pygame_menu.themes import Theme
 from config import settings
 from models import Score
 
-
 def menu_loader(HEIGHT, WIDTH):
     def set_side(value, difficulty):
         settings.player_side[0] = difficulty
@@ -13,6 +12,9 @@ def menu_loader(HEIGHT, WIDTH):
     def start_the_game():
         menu.disable()
         pass
+
+    def set_name(name):
+        settings.player_name[0] = name
 
     def scores_open():
         menu.disable()
@@ -32,7 +34,7 @@ def menu_loader(HEIGHT, WIDTH):
     menu = pygame_menu.Menu(HEIGHT, WIDTH, '', theme=mytheme)
 
     menu.add_button('Play', start_the_game)
-    menu.add_text_input('Name :', default='player')
+    menu.add_text_input('Name :', default='player', onchange=set_name)
     menu.add_selector('Your side :', [('light', 1), ('dark', 2)], onchange=set_side)
     # print(settings.player_side[0])
     menu.add_button('Scores', scores_open)

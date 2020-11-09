@@ -11,6 +11,7 @@ def get_score():
     f = open("static/scores.csv", "r")
     tab = [x.replace("\n", "").split(";") for x in f.readlines()[1:]]
     tab.sort(key=sort_by_second)
+    tab.reverse()
     return tab
 
 
